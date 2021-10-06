@@ -1,17 +1,25 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+// Import root app
+import { App } from 'app';
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const MOUNT_NODE = document.getElementById('root') as HTMLElement;
+
+const render = (Component: typeof App) => {
+  ReactDOM.render(<Component />, MOUNT_NODE);
+};
+
+if (module.hot) {
+  // Hot reloadable translation json files and app
+  // modules.hot.accept does not accept dynamic dependencies,
+  // have to be constants at compile-time
+  module.hot.accept(['./app'], () => {
+    ReactDOM.unmountComponentAtNode(MOUNT_NODE);
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const ApplicationRoot = require('./app').App;
+    render(ApplicationRoot);
+  });
+}
+
+render(App);
