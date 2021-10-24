@@ -39,8 +39,8 @@ export const Layout = ({ Component, ...rest }) => {
             <Grid item xs={12}>
               <AppBar position="static">
                 <Toolbar>
-                  <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
-                    CS 349
+                  <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
+                    CS 349 - Project 1
                   </Typography>
                   <FormGroup>
                     <Button variant="contained" color="primary">Add Event</Button>
