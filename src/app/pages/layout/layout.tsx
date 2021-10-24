@@ -1,4 +1,4 @@
-import { AppBar, FormControlLabel, FormGroup, Grid, Switch, Toolbar, Typography } from '@mui/material';
+import { AppBar, Button, FormControlLabel, FormGroup, Grid, Switch, Toolbar, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { ColorMode } from 'app/app';
 import { globalSliceKey, globalReducer } from 'app/global/global.redux';
@@ -25,10 +25,10 @@ export const Layout = ({ Component, ...rest }) => {
     if (cookies.colorMode === ColorMode.light) setChecked(true);
   }, [cookies.colorMode]);
 
-  const onChange = event => {
-    if (event.target.checked) setCookie('colorMode', ColorMode.light);
-    else setCookie('colorMode', ColorMode.dark);
-  };
+  // const onChange = event => {
+  //   if (event.target.checked) setCookie('colorMode', ColorMode.light);
+  //   else setCookie('colorMode', ColorMode.dark);
+  // };
 
   return (
     <Route
@@ -43,10 +43,11 @@ export const Layout = ({ Component, ...rest }) => {
                     CS 349
                   </Typography>
                   <FormGroup>
-                    <FormControlLabel
+                    <Button variant="contained" color="primary">Add Event</Button>
+                    {/* <FormControlLabel
                       control={<Switch color="secondary" checked={checked} onChange={onChange} />}
                       label="Light Mode"
-                    />
+                    /> */}
                   </FormGroup>
                 </Toolbar>
               </AppBar>
