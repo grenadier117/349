@@ -16,6 +16,6 @@ export function* requestAllEvents(action: PayloadAction) {
   }
 }
 
-export function* facilitySaga() {
+export function* eventsSaga() {
   yield takeLatest(eventsActions.getAllEvents.type, requestAllEvents);
 }

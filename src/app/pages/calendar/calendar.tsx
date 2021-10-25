@@ -12,33 +12,26 @@ import _ from 'lodash';
 
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectEvents } from 'app/events/events.selectors';
+import { eventsActions } from 'app/events/events.redux';
 
 export const PetCalendar: FC = () => {
-  const [events, setEvents] = useState<Event[]>([
-    {
-      title: 'Temporary First Pet Date',
-      start,
-      end,
-      id: 1,
-      resourceId: 'testing',
-      resource: 12,
-    },
-  ]);
+  const events = useSelector(selectEvents);
+  const dispatch = useDispatch();
 
   const updateExistingEvent = data => {
     const { start, end, event } = data;
-    console.info('@JAKE - data', data);
     const index = events.map(item => item.id).indexOf(event.id);
 
-    setEvents(currentEvents => {
-      const _evnts = _.cloneDeep(currentEvents);
-      _evnts[index] = {
-        ...data.event,
-        start: start,
-        end: end,
-      };
-      return _evnts;
-    });
+    const _evnts = _.cloneDeep(events);
+    _evnts[index] = {
+      ...data.event,
+      start: start,
+      end: end,
+    };
+    // TODO: Update firebase instead of dispatching to redux
+    dispatch(eventsActions.setEvent({ events: _evnts }));
   };
 
   const onEventResize: withDragAndDropProps['onEventResize'] = data => {
