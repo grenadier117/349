@@ -3,8 +3,9 @@ import { createSlice, PayloadAction, createAction } from '@reduxjs/toolkit';
 export interface IEvent {
   start: Date;
   end: Date;
-  id: number;
+  id: any;
   title: string;
+  [key: string]: any;
 }
 
 export interface IEvents {
