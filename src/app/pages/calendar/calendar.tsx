@@ -12,7 +12,7 @@ import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useSelector } from 'react-redux';
 import { selectEvents } from 'app/events/events.selectors';
-import { updateEvent } from 'app/helpers/firebaseHelpers';
+import { addEvent, updateEvent } from 'app/helpers/firebaseHelpers';
 import { FirebaseContext } from 'app/app';
 
 export const PetCalendar: FC = () => {
