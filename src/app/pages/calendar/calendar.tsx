@@ -36,6 +36,10 @@ export const PetCalendar: FC = () => {
     updateExistingEvent(data);
   };
 
+  const onSelect = event => {
+    // TODO: OPEN A MATERIAL UI DIALOG HERE WITH EVENT DETAILS
+  };
+
   return (
     <div style={{ backgroundColor: 'white', padding: '20px' }}>
       <ViewCalendar
@@ -47,6 +51,7 @@ export const PetCalendar: FC = () => {
         onEventResize={onEventResize}
         resizable
         style={{ height: 'calc(100vh - 105px)' }}
+        onSelectEvent={onSelect}
       />
     </div>
   );
