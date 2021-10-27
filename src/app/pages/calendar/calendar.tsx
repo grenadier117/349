@@ -6,13 +6,11 @@ import parse from 'date-fns/parse';
 import startOfWeek from 'date-fns/startOfWeek';
 import getDay from 'date-fns/getDay';
 import enUS from 'date-fns/locale/en-US';
-import addHours from 'date-fns/addHours';
-import startOfHour from 'date-fns/startOfHour';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useSelector } from 'react-redux';
 import { selectEvents } from 'app/events/events.selectors';
-import { addEvent, updateEvent } from 'app/helpers/firebaseHelpers';
+import { updateEvent } from 'app/helpers/firebaseHelpers';
 import { FirebaseContext } from 'app/app';
 
 export const PetCalendar: FC = () => {
@@ -36,7 +34,7 @@ export const PetCalendar: FC = () => {
     updateExistingEvent(data);
   };
 
-  const onSelect = event => {
+  const onSelect = () => {
     // TODO: OPEN A MATERIAL UI DIALOG HERE WITH EVENT DETAILS
   };
 
