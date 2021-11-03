@@ -7,6 +7,8 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { makeStyles } from '@mui/styles';
 import moment from 'moment';
 import { IFirebaseEvent } from 'app/models/firebaseEvent';
+import { useDispatch } from 'react-redux';
+import { globalActions } from 'app/global/global.redux';
 
 const useStyles = makeStyles({
   title: {
@@ -29,6 +31,7 @@ export const AddEvent = (
     onCancel: () => void; 
     onAdd: (eventDetails: IFirebaseEvent) => Promise<any> 
   }) => {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const [startDate, setStartDate] = React.useState<any>(null);
   const [endDate, setEndDate] = React.useState<any>(null);
@@ -62,8 +65,16 @@ export const AddEvent = (
       end: moment(endDate).format('YYYY-MM-DDTHH:mm:ss.SSSz'),
       title: title ?? '',
     }).then(_ => {
+      dispatch(globalActions.setSnackBar({
+        message: 'Pet date created!',
+        severity: 'info',
+      }))
       clearValues();
     }).catch(error => {
+      dispatch(globalActions.setSnackBar({
+        message: 'Error creating event',
+        severity: 'error',
+      }))
       console.error('Error adding event', error);
     });
   }
