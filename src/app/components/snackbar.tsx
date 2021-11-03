@@ -39,22 +39,12 @@ const StyledIcon = withStyles({
   },
 })(CloseIcon);
 
-export const SnackBar = ({
-  open,
-  message,
-  autohideDuration = 400000,
-  handleClose,
-  action,
-  severity = 'info',
-}: Props) => {
+export const SnackBar = ({ open, message, autohideDuration = 4000, handleClose, action, severity = 'info' }: Props) => {
   const classes = useStyles();
   const [_open, _setOpen] = useState<boolean>(false);
   const alignment: SnackbarOrigin = { vertical: 'bottom', horizontal: 'center' };
 
   const _handleClose = (event?: React.SyntheticEvent, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
     _setOpen(false);
     handleClose?.();
   };
@@ -74,7 +64,7 @@ export const SnackBar = ({
       <Alert
         action={
           action || (
-            <IconButton>
+            <IconButton onClick={_handleClose}>
               <StyledIcon />
             </IconButton>
           )

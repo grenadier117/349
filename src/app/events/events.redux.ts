@@ -24,7 +24,7 @@ const eventsSlice = createSlice({
   name: 'events',
   initialState: initialState,
   reducers: {
-    /** Internal action to toggle the open snackbar */
+    /** sent the events currently stored in firebase */
     setEvent(state, action: PayloadAction<IEvents>) {
       return {
         ...state,

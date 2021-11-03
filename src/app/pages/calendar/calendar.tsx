@@ -12,10 +12,6 @@ import { useSelector } from 'react-redux';
 import { selectEvents } from 'app/events/events.selectors';
 import { addEvent, updateEvent } from 'app/helpers/firebaseHelpers';
 import { FirebaseContext } from 'app/app';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
-import moment from 'moment';
-import { IEvent } from 'app/events/events.redux';
-import { makeStyles } from '@mui/styles';
 import { AddEvent } from './addEvent';
 import { IFirebaseEvent } from 'app/models/firebaseEvent';
 
