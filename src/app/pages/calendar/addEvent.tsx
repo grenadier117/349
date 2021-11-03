@@ -81,7 +81,7 @@ export const AddEvent = ({
     onAdd({
       start: moment(startDate).format('YYYY-MM-DDTHH:mm:ss.SSSz'),
       end: moment(endDate).format('YYYY-MM-DDTHH:mm:ss.SSSz'),
-      title: objectKey ?? '',
+      title: title ?? '',
     })
       .then(_ => {
         dispatch(
