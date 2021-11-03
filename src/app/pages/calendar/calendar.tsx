@@ -10,12 +10,20 @@ import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useSelector } from 'react-redux';
 import { selectEvents } from 'app/events/events.selectors';
-import { updateEvent } from 'app/helpers/firebaseHelpers';
+import { addEvent, updateEvent } from 'app/helpers/firebaseHelpers';
 import { FirebaseContext } from 'app/app';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
+import moment from 'moment';
+import { IEvent } from 'app/events/events.redux';
+import { makeStyles } from '@mui/styles';
+import { AddEvent } from './addEvent';
+import { IFirebaseEvent } from 'app/models/firebaseEvent';
 
 export const PetCalendar: FC = () => {
   const { firestore } = React.useContext(FirebaseContext);
   const events = useSelector(selectEvents);
+  const [event, setEvent] = React.useState<any>(null);
+  const [addEventData, setAddEventData] = React.useState<any>(null);
 
   const updateExistingEvent = data => {
     const { start, end, event } = data;
@@ -34,13 +42,36 @@ export const PetCalendar: FC = () => {
     updateExistingEvent(data);
   };
 
-  const onSelect = () => {
-    // TODO: OPEN A MATERIAL UI DIALOG HERE WITH EVENT DETAILS
+  const onSelect = event => {
+    setEvent(event);
+  };
+
+  const onAddEvent = (eventDetails: IFirebaseEvent): Promise<any> => {
+    return new Promise<any>((resolve, reject) => {
+      addEvent(firestore, eventDetails)
+        .then(_ => {
+          setAddEventData(null);
+          resolve(true);
+        })
+        .catch(error => {
+          console.log('error', error);
+          reject(error);
+        });
+    });
+  };
+
+  const onCancelAddEvent = () => {
+    setAddEventData(null);
+  };
+
+  const onSelectSlot = slotInfo => {
+    if (slotInfo.action === 'doubleClick' || slotInfo.action === 'select') setAddEventData(slotInfo);
   };
 
   return (
     <div style={{ backgroundColor: 'white', padding: '20px' }}>
       <ViewCalendar
+        selectable
         defaultView="month"
         events={events}
         views={['month', 'week', 'day']}
@@ -50,7 +81,9 @@ export const PetCalendar: FC = () => {
         resizable
         style={{ height: 'calc(100vh - 105px)' }}
         onSelectEvent={onSelect}
+        onSelectSlot={onSelectSlot}
       />
+      <AddEvent open={!!addEventData} slotInfo={addEventData} onCancel={onCancelAddEvent} onAdd={onAddEvent} />
     </div>
   );
 };

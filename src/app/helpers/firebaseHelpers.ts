@@ -19,7 +19,7 @@ export const updateEvent = (firestore: Firestore, id: string, fields: { [key: st
  * @param fields new event to add
  */
 export const addEvent = (firestore: Firestore, fields: IFirebaseEvent) => {
-  setDoc(doc(firestore, 'events', makeDocHash(20)), fields);
+  return setDoc(doc(firestore, 'events', makeDocHash(20)), fields);
 };
 
 const makeDocHash = len => {
