@@ -14,6 +14,7 @@ import { addEvent, updateEvent } from 'app/helpers/firebaseHelpers';
 import { FirebaseContext } from 'app/app';
 import { AddEvent } from './addEvent';
 import { IFirebaseEvent } from 'app/models/firebaseEvent';
+import { ViewEvent } from './viewEvent';
 
 export const PetCalendar: FC = () => {
   const { firestore } = React.useContext(FirebaseContext);
@@ -45,7 +46,7 @@ export const PetCalendar: FC = () => {
   const onAddEvent = (eventDetails: IFirebaseEvent): Promise<any> => {
     return new Promise<any>((resolve, reject) => {
       addEvent(firestore, eventDetails)
-        .then(_ => {
+        .then(() => {
           setAddEventData(null);
           resolve(true);
         })
@@ -80,6 +81,7 @@ export const PetCalendar: FC = () => {
         onSelectSlot={onSelectSlot}
       />
       <AddEvent open={!!addEventData} slotInfo={addEventData} onCancel={onCancelAddEvent} onAdd={onAddEvent} />
+      <ViewEvent event={event} onClose={() => setEvent(null)} />
     </div>
   );
 };
