@@ -48,10 +48,6 @@ export const ViewEvent = ({ event, onClose }) => {
                   <td className={classes.rowTitle}>End Date:</td>
                   <td>{`${moment(event.end).format('MM/DD/YYYY @ hh:mm A')}`}</td>
                 </tr>
-                <tr>
-                  <td className={classes.rowTitle}>Is all day event:</td>
-                  <td>{event.allDay ? 'True' : 'False'}</td>
-                </tr>
               </tbody>
             </table>
             <DialogActions>
