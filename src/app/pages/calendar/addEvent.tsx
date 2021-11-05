@@ -73,7 +73,7 @@ export const AddEvent = ({
     clearValues();
   };
 
-  const _onAdd = objectKey => _ => {
+  const _onAdd = () => {
     if (validateForm()) {
       setErrors({});
     } else return;
@@ -83,7 +83,7 @@ export const AddEvent = ({
       end: moment(endDate).format('YYYY-MM-DDTHH:mm:ss.SSSz'),
       title: title ?? '',
     })
-      .then(_ => {
+      .then(() => {
         dispatch(
           globalActions.setSnackBar({
             message: 'Pet date created!',
@@ -199,11 +199,7 @@ export const AddEvent = ({
         <Button style={{ color: 'white' }} onClick={_onCancel}>
           Cancel
         </Button>
-        <Button
-          disabled={Object.values(errors).indexOf(true) !== -1}
-          style={{ color: 'white' }}
-          onClick={_onAdd('title')}
-        >
+        <Button disabled={Object.values(errors).indexOf(true) !== -1} style={{ color: 'white' }} onClick={_onAdd}>
           Add
         </Button>
       </DialogActions>

@@ -1,5 +1,5 @@
 import { IFirebaseEvent } from 'app/models/firebaseEvent';
-import { Firestore, doc, updateDoc, setDoc, collection } from 'firebase/firestore';
+import { Firestore, doc, updateDoc, setDoc, collection, deleteDoc } from 'firebase/firestore';
 
 /**
  * Update an event that already exists in firebase
@@ -20,6 +20,10 @@ export const updateEvent = (firestore: Firestore, id: string, fields: { [key: st
  */
 export const addEvent = (firestore: Firestore, fields: IFirebaseEvent) => {
   return setDoc(doc(firestore, 'events', makeDocHash(20)), fields);
+};
+
+export const deleteEvent = (firestore: Firestore, id: string) => {
+  return deleteDoc(doc(collection(firestore, 'events'), `/${id}`));
 };
 
 const makeDocHash = len => {

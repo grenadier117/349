@@ -1,4 +1,4 @@
-import { AppBar, Button, FormGroup, Grid, Toolbar, Typography } from '@mui/material';
+import { AppBar, Grid, Toolbar, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { globalSliceKey, globalReducer } from 'app/global/global.redux';
 import { GlobalDisplay } from 'app/global/globalDisplay';
@@ -28,11 +28,6 @@ export const Layout = ({ Component, ...rest }) => {
                   <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
                     CS 349 - Project 1
                   </Typography>
-                  <FormGroup>
-                    <Button variant="contained" color="primary">
-                      Add Event
-                    </Button>
-                  </FormGroup>
                 </Toolbar>
               </AppBar>
             </Grid>

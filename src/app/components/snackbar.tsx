@@ -44,7 +44,7 @@ export const SnackBar = ({ open, message, autohideDuration = 4000, handleClose, 
   const [_open, _setOpen] = useState<boolean>(false);
   const alignment: SnackbarOrigin = { vertical: 'bottom', horizontal: 'center' };
 
-  const _handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+  const _handleClose = () => {
     _setOpen(false);
     handleClose?.();
   };
