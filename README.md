@@ -1,29 +1,24 @@
 # 349 React Project
 
-<style type="text/css" rel="stylesheet">
+<style>
+  body { background: rgb(60, 150, 191); }
 
-body { background: rgb(60, 150, 191); }
+  h1, p, img {
+    text-align: center;
+    color: #cfc547;
+    text-shadow: 1px 1px 0px black
+  }
 
-h1, p, img {
-  text-align: center;
-  color: #cfc547;
-  text-shadow: 1px 1px 0px black
-    /*-1px 1px 0 #41ba45,*/
-    /*1px 1px 0 #c63d2b,*/
-    /*1px -1px 0 #42afac,*/
-    /*-1px -1px 0 #c6c23f;*/
-}
+  h1, h2, h3, span { color: green; text-shadow: 1px 1px 0px black }
 
-h1, h2, h3, span { color: green; text-shadow: 1px 1px 0px black }
+  .linker { color: red }
 
-.linker { color: red }
+  p { color: white }
 
-p { color: white }
-  
-img {
-  width: 600px;
-  height: 500px;
-}
+  img {
+    width: 600px;
+    /*height: 300px;*/
+  }
 </style>
 
 This completed project is published and can be viewed
