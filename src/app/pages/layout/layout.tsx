@@ -26,6 +26,9 @@ export const Layout = ({ Component, ...rest }) => {
               <AppBar position="static">
                 <Toolbar>
                   <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
+                    PET CALENDAR
+                  </Typography>
+                  <Typography variant="h5" component="div" sx={{ flexGrow: -1 }}>
                     CS 349 - Project 1
                   </Typography>
                 </Toolbar>
