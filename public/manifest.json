@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App",
+  "short_name": "Pet Calendar",
+  "name": "Pet Calendar",
   "icons": [
     {
       "src": "pix1.png",
