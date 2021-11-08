@@ -1,35 +1,26 @@
-# 349 React Project
+# CPSC 349 Project 1 - Pet Dates
 
-<style>
-  body { background: rgb(60, 150, 191); }
+This completed project is published and can be viewed [here](http://349.gonecoding.io/)
 
-  h1, p, img, h6 {
-    text-align: center;
-    color: #cfc547;
-    text-shadow: 1px 1px 0px black
-  }
+## Installation
+Dependencies: Node >= 14.0.0 and npm >= 5.6
 
-  h1, h2, h3, span {
-    color: green;
-    text-shadow: 1px 1px 0px black
-  }
+run ```npm install``` to install all dependencies for the project
 
-  .linker { color: red }
+run ```npm start``` to start development server
 
-  p { color: white }
+navigate to http://localhost:3000
 
-  span.asterick {
-    color: rgb(201, 188, 31);
-  }
+## Usage
 
-  img {
-    width: 600px;
-    /*height: 300px;*/
-  }
-</style>
-
-This completed project is published and can be viewed
-<a href="[/projects/markdown/](http://349.gonecoding.io/)" class="linker" title="Markdown Project Page">here</a>.
+The default page is your calendar view set to "Month".
+* Add Event
+  * Double click on a day and enter your title, start date, and end date. Then click "Add".
+  * While in "Week" or "Day" view, drag along the time period you wish your event to take place and fill out event details.
+* View Event
+  * Click on an existing event in the calendar to view the details.
+* Delete Event
+  * Click on an existing event in the calendar to view the details, then click the "Delete" button at the bottom of the modal.
 
 ## HISTORY
 
