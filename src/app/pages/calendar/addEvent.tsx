@@ -301,16 +301,16 @@ export const AddEvent = ({
         </LocalizationProvider>
       </DialogContent>
       <DialogActions>
-        <Button style={{ color: 'white' }} onClick={_onCancel}>
+        <Button style={{ color: 'black' }} onClick={_onCancel}>
           Cancel
         </Button>
         {addEvent && (
-          <Button disabled={Object.values(errors).indexOf(true) !== -1} style={{ color: 'white' }} onClick={_onAdd}>
+          <Button disabled={Object.values(errors).indexOf(true) !== -1} style={{ color: 'black' }} onClick={_onAdd}>
             Add
           </Button>
         )}
         {editEvent && (
-          <Button disabled={Object.values(errors).indexOf(true) !== -1} style={{ color: 'white' }} onClick={_onUpdate}>
+          <Button disabled={Object.values(errors).indexOf(true) !== -1} style={{ color: 'black' }} onClick={_onUpdate}>
             Update
           </Button>
         )}
