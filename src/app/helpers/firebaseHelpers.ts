@@ -8,7 +8,7 @@ import { Firestore, doc, updateDoc, setDoc, collection, deleteDoc } from 'fireba
  * @param fields fields that need to be updated
  */
 export const updateEvent = (firestore: Firestore, id: string, fields: { [key: string]: any }) => {
-  updateDoc(doc(collection(firestore, 'events'), `/${id}`), {
+  return updateDoc(doc(collection(firestore, 'events'), `/${id}`), {
     ...fields,
   });
 };

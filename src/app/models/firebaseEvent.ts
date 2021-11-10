@@ -5,4 +5,6 @@ export interface IFirebaseEvent {
   end: string;
   /** Event title */
   title: string;
+  /** Event description */
+  description: string;
 }
