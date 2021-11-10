@@ -234,7 +234,7 @@ export const AddEvent = ({
 
   return (
     <Dialog maxWidth="xs" open={open}>
-      <DialogTitle>Add Event</DialogTitle>
+      <DialogTitle>{addEvent ? 'Add Event' : 'Edit Event'}</DialogTitle>
       <DialogContent style={{ width: '250px' }}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <Grid container spacing={3}>
