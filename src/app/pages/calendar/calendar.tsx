@@ -30,18 +30,35 @@ export const PetCalendar: FC = () => {
     });
   };
 
+  /**
+   * Resize an existing evnet within the same day with a new start date and end date
+   * @param data event details with updated start date and end date
+   */
   const onEventResize: withDragAndDropProps['onEventResize'] = data => {
     updateExistingEvent(data);
   };
 
+  /**
+   * Drag an event to a new day
+   * @param data event details with updated start date and end date
+   */
   const onEventDrop: withDragAndDropProps['onEventDrop'] = data => {
     updateExistingEvent(data);
   };
 
+  /**
+   * Select an existing even on the calendar to present the details
+   * @param event includes all events details: id, start date, end date, title, descrition
+   */
   const onSelect = event => {
     setEvent(event);
   };
 
+  /**
+   * Add event handler
+   * @param eventDetails details for the event that include title, description, start date, end date
+   * @returns promise of success/failure
+   */
   const onAddEvent = (eventDetails: IFirebaseEvent): Promise<any> => {
     return new Promise<any>((resolve, reject) => {
       addEvent(firestore, eventDetails)
@@ -56,11 +73,18 @@ export const PetCalendar: FC = () => {
     });
   };
 
-  const onCancelAddEvent = () => {
+  /**
+   * cancel event add/edit
+   */
+  const onCancelEvent = () => {
     setAddEventData(null);
     setEvent(null);
   };
 
+  /**
+   * Select non-existent slot by dragging in order to add a new event
+   * @param slotInfo includes start date and end date for new event
+   */
   const onSelectSlot = slotInfo => {
     if (slotInfo.action === 'doubleClick' || slotInfo.action === 'select') setAddEventData(slotInfo);
   };
@@ -79,6 +103,12 @@ export const PetCalendar: FC = () => {
     });
   };
 
+  /**
+   * Update an existing event
+   * @param id the ID of the existing event
+   * @param eventDetails details of the event to be updated
+   * @returns Promise of success/failure
+   */
   const onUpdate = (id: string, eventDetails: IFirebaseEvent): Promise<any> => {
     return new Promise<any>((resolve, reject) => {
       updateEvent(firestore, id, {
@@ -118,7 +148,7 @@ export const PetCalendar: FC = () => {
         editEvent={!!event}
         open={!!addEventData || event}
         slotInfo={addEventData ? addEventData : event}
-        onCancel={onCancelAddEvent}
+        onCancel={onCancelEvent}
         onAdd={onAddEvent}
         onDelete={onDelete}
         onUpdate={onUpdate}
