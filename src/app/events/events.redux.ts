@@ -5,6 +5,7 @@ export interface IEvent {
   end: Date;
   id: any;
   title: string;
+  description: string;
   [key: string]: any;
 }
 

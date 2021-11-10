@@ -19,6 +19,22 @@ const useStyles = makeStyles({
   fullWidth: {
     width: '100%',
   },
+  scrollbar: {
+    '&::-webkit-scrollbar': {
+      width: '0.5em',
+    },
+    '&::-webkit-scrollbar-track': {
+      borderRadius: '10px',
+    },
+    '&::-webkit-scrollbar-thumb': {
+      borderRadius: '10px',
+      scrollPadding: '4px',
+      height: '10%',
+      border: '5px solid rgba(255,255,255,0)',
+      boxShadow: 'inset -1px -1px 0px rgba(0, 0, 0, 0.05), inset 1px 1px 0px rgba(0, 0, 0, 0.05)',
+      backgroundColor: '#888888',
+    },
+  },
 });
 
 export const AddEvent = ({
@@ -26,30 +42,46 @@ export const AddEvent = ({
   slotInfo,
   onCancel,
   onAdd,
+  onUpdate,
+  onDelete,
+  addEvent,
+  editEvent,
 }: {
   open: boolean;
   slotInfo: { [key: string]: any };
   onCancel: () => void;
-  onAdd: (eventDetails: IFirebaseEvent) => Promise<any>;
+  onAdd?: (eventDetails: IFirebaseEvent) => Promise<any> | void;
+  onUpdate?: (id: string, eventDetails: IFirebaseEvent) => Promise<any> | void;
+  onDelete?: (id: any) => Promise<any> | void;
+  addEvent?: boolean;
+  editEvent?: boolean;
 }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
-  const [startDate, setStartDate] = React.useState<any>(null);
-  const [endDate, setEndDate] = React.useState<any>(null);
-  const [title, setTitle] = React.useState<string | null>(null);
+  const [_startDate, _setStartDate] = React.useState<any>(slotInfo?.start);
+  const [_endDate, _setEndDate] = React.useState<any>(slotInfo?.end);
+  const [_title, _setTitle] = React.useState<string | undefined>(slotInfo?.title);
+  const [_description, _setDescription] = React.useState<string | undefined>(slotInfo?.description);
   const [errors, setErrors] = React.useState<{ [key: string]: boolean }>({});
 
   React.useEffect(() => {
-    setStartDate(slotInfo?.start);
-    setEndDate(slotInfo?.end);
+    console.info('@JAKE - event', slotInfo);
+    _setStartDate(slotInfo?.start);
+    _setEndDate(slotInfo?.end);
+    _setTitle(slotInfo?.title);
+    _setDescription(slotInfo?.description);
   }, [slotInfo]);
 
   const onTitleChange = event => {
-    setTitle(event.target.value);
+    _setTitle(event.target.value);
     setErrors(prev => ({
       ...prev,
       title: !event.target.value,
     }));
+  };
+
+  const onDescriptionChange = event => {
+    _setDescription(event.target.value);
   };
 
   const onStartDateChange = objectKey => event => {
@@ -57,7 +89,7 @@ export const AddEvent = ({
       ...prev,
       [objectKey]: false,
     }));
-    setStartDate(moment(event));
+    _setStartDate(moment(event));
   };
 
   const onEndDateChange = objectKey => event => {
@@ -65,7 +97,7 @@ export const AddEvent = ({
       ...prev,
       [objectKey]: false,
     }));
-    setEndDate(moment(event));
+    _setEndDate(moment(event));
   };
 
   const _onCancel = () => {
@@ -73,17 +105,22 @@ export const AddEvent = ({
     clearValues();
   };
 
+  /**
+   * Add a new event
+   * @returns Promise of success or failure
+   */
   const _onAdd = () => {
     if (validateForm()) {
       setErrors({});
     } else return;
 
-    onAdd({
-      start: moment(startDate).format('YYYY-MM-DDTHH:mm:ss.SSSz'),
-      end: moment(endDate).format('YYYY-MM-DDTHH:mm:ss.SSSz'),
-      title: title ?? '',
+    onAdd?.({
+      start: moment(_startDate).format('YYYY-MM-DDTHH:mm:ss.SSSz'),
+      end: moment(_endDate).format('YYYY-MM-DDTHH:mm:ss.SSSz'),
+      title: _title ?? '',
+      description: _description ?? '',
     })
-      .then(() => {
+      ?.then(() => {
         dispatch(
           globalActions.setSnackBar({
             message: 'Pet date created!',
@@ -103,17 +140,70 @@ export const AddEvent = ({
       });
   };
 
+  /**
+   * Delete an existing event
+   */
+  const _onDelete = () => {
+    onDelete?.(slotInfo.id)
+      ?.then(() => {
+        dispatch(
+          globalActions.setSnackBar({
+            message: 'Pet date deleted',
+            severity: 'error',
+          }),
+        );
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+
+  /**
+   * Update an existing event
+   * @returns Promise of success or failure
+   */
+  const _onUpdate = () => {
+    if (validateForm()) {
+      setErrors({});
+    } else return;
+
+    onUpdate?.(slotInfo.id, {
+      start: moment(_startDate).format('YYYY-MM-DDTHH:mm:ss.SSSz'),
+      end: moment(_endDate).format('YYYY-MM-DDTHH:mm:ss.SSSz'),
+      title: _title ?? '',
+      description: _description ?? '',
+    })
+      ?.then(() => {
+        dispatch(
+          globalActions.setSnackBar({
+            message: 'Pet date updated!',
+            severity: 'info',
+          }),
+        );
+        clearValues();
+      })
+      .catch(error => {
+        dispatch(
+          globalActions.setSnackBar({
+            message: 'Error creating event',
+            severity: 'error',
+          }),
+        );
+        console.error('Error adding event', error);
+      });
+  };
+
   // TODO: Implement React Hook Form for validation when time permits
   const validateForm = (): boolean => {
-    if (Object.values(errors).indexOf(true) !== -1 || !title) {
-      if (!title) {
+    if (Object.values(errors).indexOf(true) !== -1 || !_title) {
+      if (!_title) {
         setErrors(prev => ({
           ...prev,
           title: true,
         }));
       }
       return false;
-    } else if (endDate < startDate) {
+    } else if (_endDate < _startDate) {
       dispatch(
         globalActions.setSnackBar({
           message: 'End date cannot be less than start date',
@@ -135,9 +225,10 @@ export const AddEvent = ({
   };
 
   const clearValues = () => {
-    setStartDate(null);
-    setEndDate(null);
-    setTitle(null);
+    _setStartDate(undefined);
+    _setEndDate(undefined);
+    _setTitle(undefined);
+    _setDescription(undefined);
     setErrors({});
   };
 
@@ -154,14 +245,28 @@ export const AddEvent = ({
                 variant="standard"
                 error={errors.title}
                 helperText={errors.title && 'Title required'}
-                value={title}
+                value={_title}
                 onChange={onTitleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                inputProps={{
+                  className: classes.scrollbar,
+                }}
+                label="Description"
+                className={classes.fullWidth}
+                variant="standard"
+                multiline
+                maxRows={4}
+                value={_description}
+                onChange={onDescriptionChange}
               />
             </Grid>
             <Grid item xs={12}>
               <DateTimePicker
                 label="Start Date"
-                value={startDate}
+                value={_startDate}
                 onError={onError('start')}
                 onChange={onStartDateChange('start')}
                 renderInput={params => (
@@ -178,7 +283,7 @@ export const AddEvent = ({
             <Grid item xs={12}>
               <DateTimePicker
                 label="End Date"
-                value={endDate}
+                value={_endDate}
                 onError={onError('end')}
                 onChange={onEndDateChange('end')}
                 renderInput={params => (
@@ -199,9 +304,21 @@ export const AddEvent = ({
         <Button style={{ color: 'white' }} onClick={_onCancel}>
           Cancel
         </Button>
-        <Button disabled={Object.values(errors).indexOf(true) !== -1} style={{ color: 'white' }} onClick={_onAdd}>
-          Add
-        </Button>
+        {addEvent && (
+          <Button disabled={Object.values(errors).indexOf(true) !== -1} style={{ color: 'white' }} onClick={_onAdd}>
+            Add
+          </Button>
+        )}
+        {editEvent && (
+          <Button disabled={Object.values(errors).indexOf(true) !== -1} style={{ color: 'white' }} onClick={_onUpdate}>
+            Update
+          </Button>
+        )}
+        {editEvent && (
+          <Button disabled={Object.values(errors).indexOf(true) !== -1} style={{ color: 'salmon' }} onClick={_onDelete}>
+            Delete
+          </Button>
+        )}
       </DialogActions>
     </Dialog>
   );

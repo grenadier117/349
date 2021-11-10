@@ -10,11 +10,10 @@ import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useSelector } from 'react-redux';
 import { selectEvents } from 'app/events/events.selectors';
-import { addEvent, updateEvent } from 'app/helpers/firebaseHelpers';
+import { addEvent, deleteEvent, updateEvent } from 'app/helpers/firebaseHelpers';
 import { FirebaseContext } from 'app/app';
 import { AddEvent } from './addEvent';
 import { IFirebaseEvent } from 'app/models/firebaseEvent';
-import { ViewEvent } from './viewEvent';
 
 export const PetCalendar: FC = () => {
   const { firestore } = React.useContext(FirebaseContext);
@@ -59,10 +58,44 @@ export const PetCalendar: FC = () => {
 
   const onCancelAddEvent = () => {
     setAddEventData(null);
+    setEvent(null);
   };
 
   const onSelectSlot = slotInfo => {
     if (slotInfo.action === 'doubleClick' || slotInfo.action === 'select') setAddEventData(slotInfo);
+  };
+
+  const onDelete = () => {
+    return new Promise<any>((resolve, reject) => {
+      deleteEvent(firestore, event.id)
+        .then(() => {
+          setEvent(null);
+          resolve(true);
+        })
+        .catch(error => {
+          reject(error);
+          console.error('error', error);
+        });
+    });
+  };
+
+  const onUpdate = (id: string, eventDetails: IFirebaseEvent): Promise<any> => {
+    return new Promise<any>((resolve, reject) => {
+      updateEvent(firestore, id, {
+        start: eventDetails.start,
+        end: eventDetails.end,
+        title: eventDetails.title,
+        description: eventDetails.description,
+      })
+        .then(() => {
+          setEvent(null);
+          resolve(true);
+        })
+        .catch(error => {
+          console.log('error', error);
+          reject(error);
+        });
+    });
   };
 
   return (
@@ -80,8 +113,16 @@ export const PetCalendar: FC = () => {
         onSelectEvent={onSelect}
         onSelectSlot={onSelectSlot}
       />
-      <AddEvent open={!!addEventData} slotInfo={addEventData} onCancel={onCancelAddEvent} onAdd={onAddEvent} />
-      <ViewEvent event={event} onClose={() => setEvent(null)} />
+      <AddEvent
+        addEvent={!!addEventData}
+        editEvent={!!event}
+        open={!!addEventData || event}
+        slotInfo={addEventData ? addEventData : event}
+        onCancel={onCancelAddEvent}
+        onAdd={onAddEvent}
+        onDelete={onDelete}
+        onUpdate={onUpdate}
+      />
     </div>
   );
 };

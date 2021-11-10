@@ -15,7 +15,7 @@ export const Firebase = props => {
       const events: IEvent[] = [];
       querySnapshot.forEach(doc => {
         const data = doc.data();
-        events.push({ start: data.start, end: data.end, title: data.title, id: doc.id });
+        events.push({ start: data.start, end: data.end, title: data.title, description: data.description, id: doc.id });
       });
       dispatch(
         eventsActions.setEvent({
