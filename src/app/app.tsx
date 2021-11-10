@@ -29,11 +29,11 @@ export enum ColorMode {
 
 export const App = () => {
   const ColorModeContext = React.createContext<any>(undefined);
-  const [mode, setMode] = React.useState<PaletteMode>(ColorMode.dark);
+  const [mode, setMode] = React.useState<PaletteMode>(ColorMode.light);
   const colorMode = React.useMemo(
     () => ({
       toggleColorMode: () => {
-        setMode((prevMode: PaletteMode) => (prevMode === ColorMode.light ? ColorMode.dark : ColorMode.light));
+        setMode(() => ColorMode.light);
       },
     }),
     [],
@@ -42,7 +42,7 @@ export const App = () => {
 
   React.useEffect(() => {
     if (cookies.colorMode) setMode(cookies.colorMode);
-    else setCookie('colorMode', ColorMode.dark);
+    else setCookie('colorMode', ColorMode.light);
   }, []);
 
   React.useEffect(() => {
